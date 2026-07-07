@@ -1,0 +1,208 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #2f3d2a;
+  --cream: #fdf6ec;
+  --leaf: #7cbb62;
+  --leaf-deep: #4a8a58;
+  --blush: #f79ac0;
+}
+
+@theme inline {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), cursive;
+}
+
+html,
+body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+}
+
+.font-display {
+  font-family: var(--font-display), cursive;
+}
+
+/* ---------- Reusable UI pieces ---------- */
+
+.glass-card {
+  background: rgba(253, 246, 236, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 12px 40px rgba(47, 61, 42, 0.18);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 16px rgba(47, 61, 42, 0.14);
+  border-radius: 9999px;
+  padding: 0.7rem 1.15rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.glass-pill:hover {
+  background: rgba(255, 255, 255, 0.92);
+  transform: translateY(-1px);
+}
+
+.glass-pill:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #7cbb62, #4a8a58);
+  color: #fff;
+  border-radius: 9999px;
+  padding: 0.7rem 1.3rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(74, 138, 88, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(47, 61, 42, 0.1);
+  border-radius: 9999px;
+  padding: 0.55rem 1rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--ink);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.btn-ghost:active {
+  transform: scale(0.97);
+}
+
+.chip {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1.5px solid rgba(47, 61, 42, 0.14);
+  border-radius: 9999px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink);
+  transition: all 0.15s ease;
+}
+
+.chip:hover {
+  border-color: var(--leaf);
+}
+
+.chip-on {
+  background: var(--leaf);
+  border-color: var(--leaf-deep);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(74, 138, 88, 0.35);
+}
+
+.stepper {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: #fff;
+  border: 1px solid rgba(47, 61, 42, 0.12);
+  font-weight: 700;
+  line-height: 1;
+  transition: transform 0.1s ease;
+}
+
+.stepper:active {
+  transform: scale(0.9);
+}
+
+/* ---------- Letter (markdown) ---------- */
+
+.letter h1 {
+  font-family: var(--font-display), cursive;
+  font-size: 1.8rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.letter h2 {
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 1.2rem 0 0.4rem;
+}
+
+.letter p {
+  margin-bottom: 0.9rem;
+  white-space: pre-line;
+}
+
+.letter ul,
+.letter ol {
+  padding-left: 1.2rem;
+  margin-bottom: 0.9rem;
+}
+
+.letter li {
+  list-style: disc;
+  margin-bottom: 0.3rem;
+}
+
+.letter em {
+  font-style: italic;
+}
+
+.letter strong {
+  font-weight: 700;
+}
+
+/* ---------- Animations ---------- */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.25s ease both;
+}
+
+.animate-rise {
+  animation: rise 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
