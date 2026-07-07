@@ -13,17 +13,25 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Zen's Little Forest",
+  title: "Zen's Workout Forest",
   description: "Grow a tiny forest, one workout at a time 🌱",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Zen's Forest",
+  },
+  icons: {
+    apple: "/icons/apple-touch-icon.png",
+  },
   openGraph: {
-    title: "Zen's Little Forest",
+    title: "Zen's Workout Forest",
     description: "Grow a tiny forest, one workout at a time 🌱",
     images: [
       {
-        url: "/zenssmallbellycover.png",
-        width: 1024,
-        height: 768,
-        alt: "Zen's Little Forest",
+        url: "/og-image.png",
+        width: 2446,
+        height: 1602,
+        alt: "Zen's Workout Forest",
       },
     ],
     type: "website",
@@ -31,7 +39,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fdf6ec",
+  themeColor: "#f6e8d3",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

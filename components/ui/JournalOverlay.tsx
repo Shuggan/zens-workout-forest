@@ -57,9 +57,9 @@ export default function JournalOverlay({ log, onClose, onDelete, onQuickLog }: P
           />
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <button className="stepper" onClick={() => setMinutes((m) => Math.max(1, m - 5))}>−</button>
+              <button className="stepper" onClick={() => setMinutes((m) => Math.max(1, m - 1))}>−</button>
               <span className="text-sm font-bold w-16 text-center">{minutes} min</span>
-              <button className="stepper" onClick={() => setMinutes((m) => Math.min(240, m + 5))}>+</button>
+              <button className="stepper" onClick={() => setMinutes((m) => Math.min(240, m + 1))}>+</button>
             </div>
             <div className="flex gap-2">
               <button className="btn-ghost !py-2 !px-3 text-sm" onClick={() => setQuickLogOpen(false)}>
@@ -134,10 +134,17 @@ export default function JournalOverlay({ log, onClose, onDelete, onQuickLog }: P
               ) : (
                 <button
                   aria-label="Delete workout"
-                  className="shrink-0 w-7 h-7 rounded-full bg-white/80 hover:bg-white text-sm opacity-50 hover:opacity-100"
+                  title="Delete workout"
+                  className="shrink-0 w-8 h-8 rounded-full bg-[#fbe9e5] hover:bg-[#f6d3cb] border border-[#e26d5c]/30 flex items-center justify-center transition-colors"
                   onClick={() => setDeleting(w.id)}
                 >
-                  ×
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c14b3a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 6h18" />
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    <line x1="10" y1="11" x2="10" y2="17" />
+                    <line x1="14" y1="11" x2="14" y2="17" />
+                  </svg>
                 </button>
               )}
             </div>

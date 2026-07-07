@@ -42,6 +42,10 @@ export function removeWorkout(id: string): LoggedWorkout[] {
   return next;
 }
 
+export function clearWorkoutLog() {
+  localStorage.removeItem(STORAGE_KEY);
+}
+
 export function totalMinutes(log: LoggedWorkout[]): number {
   return log.reduce((sum, w) => sum + w.minutes, 0);
 }

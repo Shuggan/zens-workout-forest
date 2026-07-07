@@ -173,9 +173,9 @@ export default function WorkoutOverlay({ onClose, onComplete }: Props) {
               {confirming === video.url ? (
                 <div className="mt-3 flex items-center justify-between gap-2 rounded-xl bg-[#eef6e7] px-3 py-2">
                   <div className="flex items-center gap-2">
-                    <button className="stepper" onClick={() => setMinutes((m) => Math.max(1, m - 5))}>−</button>
+                    <button className="stepper" onClick={() => setMinutes((m) => Math.max(1, m - 1))}>−</button>
                     <span className="text-sm font-bold w-16 text-center">{minutes} min</span>
-                    <button className="stepper" onClick={() => setMinutes((m) => Math.min(240, m + 5))}>+</button>
+                    <button className="stepper" onClick={() => setMinutes((m) => Math.min(240, m + 1))}>+</button>
                   </div>
                   <button className="btn-primary !py-2 !px-4 text-sm" onClick={() => onComplete(video, minutes)}>
                     Plant it 🌱

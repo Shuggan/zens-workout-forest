@@ -240,7 +240,7 @@ export default function ForestScene({ plants, anim }: Props) {
       shadows
       camera={{ position: [radius * 1.8, radius * 1.2, radius * 1.8], fov: 42, near: 0.1, far: 500 }}
       dpr={[1, 2]}
-      gl={{ antialias: true }}
+      gl={{ antialias: true, powerPreference: "high-performance", stencil: false }}
     >
       <fog attach="fog" args={["#ffe3c2", radius * 3.5, 190]} />
       <SkyDome />

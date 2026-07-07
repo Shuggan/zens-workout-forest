@@ -17,12 +17,25 @@ html,
 body {
   height: 100%;
   overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   color: var(--ink);
-  background: var(--cream);
+  /* Unsafe areas (status bar, home indicator, overscroll) blend into the
+     scene: warm sky above, grass below — matches the canvas edges. */
+  background: linear-gradient(
+    to bottom,
+    #f6e8d3 0%,
+    #f6e8d3 50%,
+    #79b95f 50%,
+    #79b95f 100%
+  );
+  touch-action: manipulation;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
 }
 
 .font-display {
@@ -137,6 +150,61 @@ body {
 
 .stepper:active {
   transform: scale(0.9);
+}
+
+/* ---------- Lock screen ---------- */
+
+.key {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 18px rgba(47, 61, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--ink);
+  transition: transform 0.1s ease, background 0.1s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.key:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.key:active {
+  transform: scale(0.92);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.pin-dot {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 9999px;
+  border: 2px solid rgba(47, 61, 42, 0.55);
+  background: rgba(255, 255, 255, 0.35);
+  transition: all 0.15s ease;
+}
+
+.pin-dot-on {
+  background: var(--ink);
+  border-color: var(--ink);
+  transform: scale(1.1);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-9px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.45s ease;
 }
 
 /* ---------- Letter (markdown) ---------- */
