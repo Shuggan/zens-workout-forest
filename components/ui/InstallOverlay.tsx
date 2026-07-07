@@ -68,8 +68,7 @@ export default function InstallOverlay({ onClose }: Props) {
         ) : isIos() ? (
           <ol className="flex flex-col gap-2.5">
             {[
-              <>Open this site in <b>Safari</b> (if you aren&apos;t already)</>,
-              <>Tap the <b>Share</b> button <ShareIcon /> at the bottom</>,
+              <>Tap the <b>Share</b> button <ShareIcon /> in your browser</>,
               <>Scroll down and tap <b>&ldquo;Add to Home Screen&rdquo;</b></>,
               <>Open <b>Zen&apos;s Forest</b> from your home screen 🌱</>,
             ].map((step, i) => (

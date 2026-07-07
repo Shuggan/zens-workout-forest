@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root {
+  /* The app is a daylight scene — never let the browser dark-theme it */
+  color-scheme: light;
   --ink: #2f3d2a;
   --cream: #fdf6ec;
   --leaf: #7cbb62;
@@ -150,6 +152,45 @@ body {
 
 .stepper:active {
   transform: scale(0.9);
+}
+
+/* ---------- Edge fades ----------
+   The app content fades into a fixed color before the screen edges, and the
+   unsafe areas (status bar, home indicator) are that same solid color — so
+   there is never a visible line where the app "ends". */
+
+.edge-fade-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 15;
+  pointer-events: none;
+  height: calc(env(safe-area-inset-top, 0px) + 6rem);
+  background: linear-gradient(
+    to bottom,
+    #f6e8d3 0px,
+    #f6e8d3 calc(env(safe-area-inset-top, 0px) + 0.25rem),
+    rgba(246, 232, 211, 0) 100%
+  );
+}
+
+/* Only appears on devices with a bottom inset (home indicator):
+   height collapses to 0 when the inset is 0. */
+.edge-fade-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 15;
+  pointer-events: none;
+  height: min(calc(env(safe-area-inset-bottom, 0px) * 12), 9rem);
+  background: linear-gradient(
+    to top,
+    #79b95f 0px,
+    #79b95f env(safe-area-inset-bottom, 0px),
+    rgba(121, 185, 95, 0) 100%
+  );
 }
 
 /* ---------- Lock screen ---------- */

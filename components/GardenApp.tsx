@@ -136,6 +136,10 @@ export default function GardenApp() {
     <div className="fixed inset-0 overflow-hidden">
       <ForestScene plants={forest} anim={anim} />
 
+      {/* Content melts into the safe-area color at the screen edges */}
+      <div className="edge-fade-top" />
+      <div className="edge-fade-bottom" />
+
       {locked ? (
         <LockScreen onUnlock={() => setLocked(false)} />
       ) : (

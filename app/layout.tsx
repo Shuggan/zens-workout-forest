@@ -17,7 +17,10 @@ export const metadata: Metadata = {
   description: "Grow a tiny forest, one workout at a time 🌱",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    // "default" + theme-color = solid cream status bar with dark, readable
+    // text in the installed app. ("black-translucent" would let the app draw
+    // underneath, but iOS forces white status text — invisible on our sky.)
+    statusBarStyle: "default",
     title: "Zen's Forest",
   },
   icons: {
@@ -39,7 +42,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f6e8d3",
+  // Same color in light and dark mode so browser chrome never goes black
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f6e8d3" },
+    { media: "(prefers-color-scheme: dark)", color: "#f6e8d3" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
