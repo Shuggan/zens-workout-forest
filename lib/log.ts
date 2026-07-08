@@ -1,49 +1,47 @@
 import { LoggedWorkout } from "./types";
 
-const STORAGE_KEY = "zlf-workout-log-v1";
-
-export function getWorkoutLog(): LoggedWorkout[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed.filter(
-      (w) => w && typeof w.id === "string" && typeof w.minutes === "number"
-    );
-  } catch {
-    return [];
-  }
-}
-
-function persist(log: LoggedWorkout[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(log));
-}
-
-export function logWorkout(
+export function buildWorkoutEntry(
   workout: Omit<LoggedWorkout, "id" | "completedAt">
-): LoggedWorkout[] {
-  const log = getWorkoutLog();
-  const entry: LoggedWorkout = {
+): LoggedWorkout {
+  return {
     ...workout,
     minutes: Math.max(1, Math.round(workout.minutes)),
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
     completedAt: Date.now(),
   };
-  const next = [...log, entry];
-  persist(next);
-  return next;
 }
 
-export function removeWorkout(id: string): LoggedWorkout[] {
-  const next = getWorkoutLog().filter((w) => w.id !== id);
-  persist(next);
-  return next;
+export async function getWorkoutLog(): Promise<LoggedWorkout[]> {
+  try {
+    const res = await fetch("/api/workouts");
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
 }
 
-export function clearWorkoutLog() {
-  localStorage.removeItem(STORAGE_KEY);
+export async function saveWorkout(entry: LoggedWorkout): Promise<LoggedWorkout[]> {
+  const res = await fetch("/api/workouts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(entry),
+  });
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
+}
+
+export async function removeWorkout(id: string): Promise<LoggedWorkout[]> {
+  const res = await fetch(`/api/workouts?id=${encodeURIComponent(id)}`, {
+    method: "DELETE",
+  });
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
+}
+
+export async function clearWorkoutLog(): Promise<void> {
+  await fetch("/api/workouts", { method: "DELETE" });
 }
 
 export function totalMinutes(log: LoggedWorkout[]): number {

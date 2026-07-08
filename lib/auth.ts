@@ -6,7 +6,7 @@ const UNLOCK_UNTIL_KEY = "zlf-unlock-until";
 const ATTEMPTS_KEY = "zlf-pin-attempts";
 const COOLDOWN_KEY = "zlf-pin-cooldown-until";
 
-const DEFAULT_PIN = "904838";
+const DEFAULT_PIN = process.env.NEXT_PUBLIC_APP_PIN ?? "";
 const ACCESS_MS = 3 * 24 * 60 * 60 * 1000; // unlocked for 3 days
 export const MAX_ATTEMPTS = 5;
 const COOLDOWN_MS = 60 * 1000; // pause after too many wrong tries

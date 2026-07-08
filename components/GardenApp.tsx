@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { LoggedWorkout, VideoResult } from "../lib/types";
-import { clearWorkoutLog, getWorkoutLog, logWorkout, removeWorkout, totalMinutes } from "../lib/log";
+import { buildWorkoutEntry, clearWorkoutLog, getWorkoutLog, removeWorkout, saveWorkout, totalMinutes } from "../lib/log";
 import { forestFromLog } from "../lib/forest";
 import { isUnlocked, lockNow } from "../lib/auth";
 import { GrowthAnim, animDuration, makeGrowthAnim, minutesAt } from "./garden/growth";
@@ -53,16 +53,23 @@ export default function GardenApp() {
 
   useEffect(() => {
     initInstallPrompt();
-    const stored = getWorkoutLog();
-    setLog(stored);
-    const unlocked = isUnlocked();
-    setLocked(!unlocked);
-    // When already unlocked, greet her by replaying the whole forest growing in.
-    // When the lock screen shows first, the forest stays fully grown behind it.
-    if (unlocked && stored.length > 0) {
-      const plants = forestFromLog(stored);
-      startAnim(makeGrowthAnim(0, plants.length, 0, totalMinutes(stored)));
-    }
+    let cancelled = false;
+    (async () => {
+      const stored = await getWorkoutLog();
+      if (cancelled) return;
+      setLog(stored);
+      const unlocked = isUnlocked();
+      setLocked(!unlocked);
+      // When already unlocked, greet her by replaying the whole forest growing in.
+      // When the lock screen shows first, the forest stays fully grown behind it.
+      if (unlocked && stored.length > 0) {
+        const plants = forestFromLog(stored);
+        startAnim(makeGrowthAnim(0, plants.length, 0, totalMinutes(stored)));
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -85,28 +92,33 @@ export default function GardenApp() {
 
   const handleComplete = (video: VideoResult, minutes: number) => {
     const before = log ?? [];
-    const next = logWorkout({
+    const entry = buildWorkoutEntry({
       title: video.title,
       minutes,
       url: video.url,
       thumbnail: video.thumbnail,
       channel: video.author.name,
     });
+    const next = [...before, entry];
     setLog(next);
     setOverlay("none");
     growNewPlants(before, next);
+    saveWorkout(entry).catch((err) => console.error("Failed to save workout", err));
   };
 
   const handleQuickLog = (title: string, minutes: number) => {
     const before = log ?? [];
-    const next = logWorkout({ title, minutes });
+    const entry = buildWorkoutEntry({ title, minutes });
+    const next = [...before, entry];
     setLog(next);
     setOverlay("none");
     growNewPlants(before, next);
+    saveWorkout(entry).catch((err) => console.error("Failed to save workout", err));
   };
 
   const handleDelete = (id: string) => {
-    setLog(removeWorkout(id));
+    setLog((log ?? []).filter((w) => w.id !== id));
+    removeWorkout(id).catch((err) => console.error("Failed to remove workout", err));
   };
 
   const handleReplay = () => {
@@ -123,10 +135,10 @@ export default function GardenApp() {
   };
 
   const handleResetForest = () => {
-    clearWorkoutLog();
     setLog([]);
     setOverlay("none");
     setAnim(null);
+    clearWorkoutLog().catch((err) => console.error("Failed to clear workout log", err));
   };
 
   if (log === null) return null;
